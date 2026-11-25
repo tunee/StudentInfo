@@ -1,5 +1,8 @@
 <?php
 require __DIR__ . '/auth.php';
+
+$user="test";
+$password="1234";
 if (currentUser($db)) { header('Location: index.php'); exit; }
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,4 +17,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = 'Invalid username or password.';
 }
 ?>
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sign in - StudentHub</title><link rel="stylesheet" href="style.css"></head><body><main class="auth-container"><section class="panel"><div class="panel-head"><h2>Sign in to StudentHub</h2><p>Enter your account details to continue.</p></div><?php if ($error): ?><div class="errors" role="alert"><?= h($error) ?></div><?php endif; ?><form method="post" class="student-form"><input type="hidden" name="token" value="<?= h($_SESSION['token']) ?>"><label for="username">Username</label><input id="username" name="username" required autocomplete="username" value="<?= h($username ?? '') ?>"><label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password"><button class="button primary submit">Sign in</button><a class="cancel" href="register.php">Need an account? Register</a></form></section></main></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sign in - StudentHub</title><link rel="stylesheet" href="style.css"></head><body><main class="auth-container"><section class="panel"><div class="panel-head"><h2>Sign in to StudentHub</h2><p>Enter your account details to continue.</p></div><?php if ($error): ?><div class="errors" role="alert"><?= h($error) ?></div><?php endif; ?><form method="post" class="student-form"><input type="hidden" name="token" value="<?= h($_SESSION['token']) ?>"><label for="username">Username</label><input id="username" name="username" required autocomplete="username" value="<?= h($username ?? '') ?>"><label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password"><button class="button primary submit">Sign in</button><a class="cancel" href="register.php">Need an account? Register</a><a class="cancel" href="admin-login.php">Administrator sign in</a></form></section></main></body></html>

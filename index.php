@@ -2,7 +2,48 @@
 
 declare(strict_types=1);
 require __DIR__ . '/auth.php';
-$user = requireUser($db);
+
+$user = currentUser($db);
+if (!$user) {
+    ?>
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>StudentHub - Student Information System</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <header class="topbar">
+        <div class="brand"><span class="brand-icon">S</span><div><strong>StudentHub</strong><small>INFORMATION SYSTEM</small></div></div>
+        <nav class="account-nav" aria-label="Account"><a href="login.php">Sign in</a><a href="admin-login.php">Administrator sign in</a><a href="register.php">Register</a></nav>
+    </header>
+    <main class="container">
+        <section class="intro">
+            <div>
+                <div class="eyebrow">STUDENT INFORMATION SYSTEM</div>
+                <h1>Student information, all in one place.</h1>
+                <p>Keep student records organized and easy to find.</p>
+            </div>
+        </section>
+        <section class="panel" aria-labelledby="welcome-heading">
+            <div class="panel-head">
+                <h2 id="welcome-heading">Welcome to StudentHub</h2>
+                <p>Sign in to view, search, and manage student details, including student IDs, courses, and year levels.</p>
+            </div>
+            <div class="panel-head">
+                <a class="button primary" href="login.php">Sign in to the directory</a>
+                <p>New to StudentHub? <a href="register.php">Create an account</a>.</p>
+            </div>
+        </section>
+        <footer>StudentHub <span>&bull;</span> Student Information System</footer>
+    </main>
+    </body>
+    </html>
+    <?php
+    exit;
+}
 $db->exec('CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, student_number TEXT NOT NULL UNIQUE, name TEXT NOT NULL, email TEXT NOT NULL, course TEXT NOT NULL, year_level INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)');
 $errors = [];
 $form = ['id'=>'', 'student_number'=>'', 'name'=>'', 'email'=>'', 'course'=>'', 'year_level'=>'1'];
@@ -50,7 +91,7 @@ $notice = $_SESSION['notice'] ?? ''; unset($_SESSION['notice']);
 
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Student Information System</title><link rel="stylesheet" href="style.css"></head>
-<body><header class="topbar"><div class="brand"><span class="brand-icon">S</span><div><strong>StudentHub</strong><small>INFORMATION SYSTEM</small></div></div><nav class="account-nav"><span><?= h($user['username']) ?></span><?php if ($user['role'] === 'admin'): ?><a href="users.php">Manage users</a><?php endif; ?><form method="post" action="logout.php"><input type="hidden" name="token" value="<?= h($_SESSION['token']) ?>"><button type="submit">Sign out</button></form></nav></header>
+<body><header class="topbar"><div class="brand"><span class="brand-icon">S</span><div><strong>StudentHub</strong><small>INFORMATION SYSTEM</small></div></div><nav class="account-nav"><span><?= h($user['username']) ?></span><?php if ($user['role'] === 'admin'): ?><a href="admin.php">Admin dashboard</a><a href="users.php">Manage users</a><?php endif; ?><form method="post" action="logout.php"><input type="hidden" name="token" value="<?= h($_SESSION['token']) ?>"><button type="submit">Sign out</button></form></nav></header>
 <main class="container"><div class="intro"><div><div class="eyebrow">DASHBOARD FOR STUDENTS</div><h1>Student directory</h1><p>Manage student records in one simple place.</p></div><a class="button primary" href="#student-form">+ Add student</a></div>
 <div class="stats"><div class="stat"><span class="stat-icon blue">◈</span><div><span>Total students</span><strong><?= $total ?></strong></div></div><div class="stat"><span class="stat-icon purple">▤</span><div><span>Courses</span><strong><?= $courses ?></strong></div></div><div class="stat note"><span class="dot"></span><div><strong>Your directory, organized.</strong><span>Add and update student details below.</span></div></div></div>
 <?php if ($notice): ?><div class="notice" role="status"><?= h($notice) ?></div><?php endif; ?>

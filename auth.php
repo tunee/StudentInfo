@@ -18,3 +18,16 @@ function requireUser(PDO $db): array {
     if (!$user) { unset($_SESSION['user_id']); header('Location: login.php'); exit; }
     return $user;
 }
+function requireAdmin(PDO $db): array {
+    $user = currentUser($db);
+    if (!$user) {
+        unset($_SESSION['user_id']);
+        header('Location: admin-login.php');
+        exit;
+    }
+    if ($user['role'] !== 'admin') {
+        http_response_code(403);
+        exit('Admin access required.');
+    }
+    return $user;
+}
