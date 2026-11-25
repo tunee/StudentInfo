@@ -1,4 +1,4 @@
-# Student Information System using AI AGILE IDE
+# Student Information System using AI AGILE IDE v1
 
 A PHP and SQLite student directory with sign-in and admin user management.
 
