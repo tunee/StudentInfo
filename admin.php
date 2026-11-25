@@ -29,6 +29,13 @@ $user = requireAdmin($db);
     <div class="layout">
         <section class="panel">
             <div class="panel-head">
+                <h2>Admission applications</h2>
+                <p>Review student applications.</p>
+            </div>
+            <div class="panel-head"><a class="button primary" href="admission.php?review=1">Review applications</a></div>
+        </section>
+        <section class="panel">
+            <div class="panel-head">
                 <h2>Manage users</h2>
                 <p>View, add, and remove accounts.</p>
             </div>
